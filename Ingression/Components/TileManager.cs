@@ -16,7 +16,7 @@ public class TileManager : Component
         if (File.Exists(filePath))
         {
             var lines = File.ReadLines(filePath);
-            TileNode[ , ] tiles = new TileNode[lines.Count(), lines.First().Count()];
+            TileNode?[ , ] tiles = new TileNode[lines.Count(), lines.First().Count()];
 
             // Reads file line by line 
             StreamReader Textfile = new StreamReader(filePath); 
@@ -60,6 +60,11 @@ public class TileManager : Component
                         if ((j + 1) <= tiles.GetLength(1) && tiles[i, j + 1] != null) {
                             tiles[i, j].East = tiles[i, j + 1];
                         }
+                        
+                        // create new entity
+                        // new entity.addcomponent tiles[i,j] (add our tile component to entity)
+                        // add entity to ParentScene through ParentScene.AddEntity();
+                        // set the entity's position, relative to graph (offset it using i and j)
                     }
                 }
             }
