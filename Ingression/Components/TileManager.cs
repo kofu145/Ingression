@@ -1,4 +1,5 @@
-﻿using GramEngine.ECS;
+﻿using System.Numerics;
+using GramEngine.ECS;
 
 namespace Ingression.Components;
 
@@ -49,7 +50,7 @@ public class TileManager : Component
                             tiles[i, j].North = tiles[i - 1, j];
                         }
                         // check down
-                        if ((i + 1) <= tiles.GetLength(0) && tiles[i + 1, j] != null) {
+                        if ((i + 1) < tiles.GetLength(0) && tiles[i + 1, j] != null) {
                             tiles[i, j].South = tiles[i + 1, j];
                         }
                         // check left
@@ -57,15 +58,20 @@ public class TileManager : Component
                             tiles[i, j].West = tiles[i, j - 1];
                         } 
                         // check right
-                        if ((j + 1) <= tiles.GetLength(1) && tiles[i, j + 1] != null) {
+                        if ((j + 1) < tiles.GetLength(1) && tiles[i, j + 1] != null) {
                             tiles[i, j].East = tiles[i, j + 1];
                         }
-                        
-                        // create new entity
-                        // new entity.addcomponent tiles[i,j] (add our tile component to entity)
-                        // add entity to ParentScene through ParentScene.AddEntity();
-                        // set the entity's position, relative to graph (offset it using i and j)
                     }
+
+                    // create new entity
+                    Entity newTile = new Entity();
+                    // new entity.addcomponent tiles[i,j] (add our tile component to entity)
+                    newTile.AddComponent(tiles[i, j]);
+                    // add entity to ParentScene through ParentScene.AddEntity();
+                    ParentScene.AddEntity(newTile);
+                    // set the entity's position, relative to graph (offset it using i and j)
+                    
+                    newTile.Transform.Position = new Vector3(i, j, 1f);
                 }
             }
         } 
