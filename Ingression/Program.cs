@@ -8,8 +8,8 @@ internal class Program
         {
             NaiveCollision = true,
             WindowTitle = "Pong demo",
-            Width = 600,
-            Height = 400
+            Width = 1280,
+            Height = 720
         };
         Window window = new Window(new MainScene(), windowSettings);
         window.Run();

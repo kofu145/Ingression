@@ -55,6 +55,8 @@ public class TileNode : Component
             case TileType.FLOOR:
                 break;
             case TileType.WALL:
+                var sprite = ParentEntity.GetComponent<Sprite>();
+                sprite.Origin = new Vector2(sprite.Width / 2, sprite.Height / 2 + 2);
                 break;
             case TileType.START:
                 break;

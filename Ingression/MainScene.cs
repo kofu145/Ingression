@@ -1,20 +1,45 @@
-﻿using GramEngine.Core;
+﻿using System.Numerics;
+using GramEngine.Core;
+using GramEngine.Core.Input;
 using GramEngine.ECS;
+using GramEngine.ECS.Components;
 using Ingression.Components;
 
 namespace Ingression;
 
 public class MainScene : GameState
 {
-    private Entity test;
+    private Entity tilerEntity;
+    private Entity player;
+    private float test;
     public override void Initialize()
     {
-        base.Initialize();
-        test = new Entity();
-        test.AddComponent(new TileManager());
-        test.GetComponent<TileManager>().ConstructFromFile(@"./Content/test.txt");
+        test = 0;
+        tilerEntity = new Entity();
+        player = new Entity();
         
-        AddEntity(test);
+        AddEntity(tilerEntity);
+        
+        base.Initialize();
+
+        
+        
+        tilerEntity.AddComponent(new TileManager());
+        var tileManager = tilerEntity.GetComponent<TileManager>();
+        tileManager.ConstructFromFile(@"./Content/test.txt");
+
+        player.AddComponent(new Player(10f));
+        player.AddComponent(new Sprite("./Content/bob.png"));
+        player.AddComponent(new Animation());
+        player.GetComponent<Animation>().LoadTextureAtlas("./Content/bobidle-Sheet.png", "idle", .2f, (16, 16));
+        player.GetComponent<Animation>().SetState("idle");
+        
+        player.GetComponent<Player>().SetTileNode(tileManager.Head);
+        player.Transform.Position.Z = 10;
+        player.Transform.Scale = new Vector2(3, 3);
+        AddEntity(player);
+
+
     }
 
     public override void Update(GameTime gameTime)
