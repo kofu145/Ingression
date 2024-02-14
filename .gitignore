@@ -21,11 +21,22 @@
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
 
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+
 *.suo
 *.user
 .vs/
-Interlinked/[Bb]in/
-Interlinked/[Oo]bj/
+Ingression/[Bb]in/
+Ingression/[Oo]bj/
 _UpgradeReport_Files/
 [Pp]ackages/
 
@@ -35,8 +46,8 @@ Desktop.ini
 *.suo
 *.user
 _ReSharper.*
-Interlinked/bin/
+Ingression/bin/
 bin/
-Interlinked/obj
+Ingression/obj/
 *.obj
 packages
