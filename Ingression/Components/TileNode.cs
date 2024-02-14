@@ -50,8 +50,6 @@ public class TileNode : Component
         string tileTexture = "./Content/" + Type.ToString() + ".png";
         ParentEntity.AddComponent(new Sprite(tileTexture));
 
-        ParentEntity.Transform.Scale = new Vector2(2f, 2f);
-        ParentEntity.Transform.Position = new Vector3(100, 100, 0);
         switch (Type)
         {
             case TileType.FLOOR:
