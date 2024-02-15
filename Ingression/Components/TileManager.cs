@@ -58,7 +58,7 @@ public class TileManager : Component
                         if (Head == null && tiles[i, j].Type == TileType.START)
                         {
                             Head = tiles[i, j];
-                            tiles[i, j].ChangeType(TileType.FLOOR);
+                            tiles[i, j].ChangeValueType(TileType.FLOOR);
                         }
                         
                         // check up

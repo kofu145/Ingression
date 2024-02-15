@@ -68,6 +68,12 @@ public class TileNode : Component
         ParentEntity.AddComponent(new Sprite("./Content/" + Type.ToString() + ".png"));
     }
 
+    // Use this only in the rarest of circumstances!!! (basically never unless your name is TileManager)
+    public void ChangeValueType(TileType type)
+    {
+        Type = type;
+    }
+
     public override void Initialize()
     {
         base.Initialize();
