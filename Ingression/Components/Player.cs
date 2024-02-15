@@ -118,6 +118,17 @@ public class Player : Component
                 LerpSetTileNode(node);
                 lerpToFinishLerp = node.East;
                 break;
+            case TileType.BUTTON_UP:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                node.ChangeType(TileType.BUTTON_DOWN);
+                var temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in temp.AllNodes){
+                    if(tile.Type == TileType.LOCKED_DOOR) {
+                        tile.ChangeType(TileType.REGULAR_DOOR);
+                    }
+                }
+                break;
         }
 
     }
