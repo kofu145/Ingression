@@ -104,7 +104,8 @@ public class Player : Component
                 break;
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
-                LerpSetTileNode(node.East);
+                LerpSetTileNode(node);
+                finishLerp = node.East;
                 break;
         }
 
