@@ -129,6 +129,10 @@ public class Player : Component
                     }
                 }
                 break;
+            case TileType.BUTTON_DOWN:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                break;
         }
 
     }
