@@ -106,7 +106,7 @@ public class Player : Component
         {
             // north
             case Direction.NORTH:
-                if (currentTile.North != null && currentTile.North.Type == TileType.FLOOR)
+                if (currentTile.North != null && currentTile.North.Type == TileType.FLOOR && currentTile.North.Occupant == null)
                 {
                     PlacePortal(currentTile.North);
                     placingDoor = false;
@@ -114,7 +114,7 @@ public class Player : Component
                 break;
             // south
             case Direction.SOUTH:
-                if (currentTile.South != null && currentTile.South.Type == TileType.FLOOR)
+                if (currentTile.South != null && currentTile.South.Type == TileType.FLOOR && currentTile.South.Occupant == null)
                 {
                     PlacePortal(currentTile.South);
                     placingDoor = false;
@@ -122,7 +122,7 @@ public class Player : Component
                 break;
             // east
             case Direction.EAST:
-                if (currentTile.East != null && currentTile.East.Type == TileType.FLOOR)
+                if (currentTile.East != null && currentTile.East.Type == TileType.FLOOR && currentTile.East.Occupant == null)
                 {
                     PlacePortal(currentTile.East);
                     placingDoor = false;
@@ -130,7 +130,7 @@ public class Player : Component
                 break;
             // west
             case Direction.WEST:
-                if (currentTile.West != null && currentTile.West.Type == TileType.FLOOR)
+                if (currentTile.West != null && currentTile.West.Type == TileType.FLOOR && currentTile.West.Occupant == null)
                 {
                     PlacePortal(currentTile.West);
                     placingDoor = false;
@@ -144,7 +144,7 @@ public class Player : Component
             {
                 ParentScene.DestroyEntity(entity);
             }
-    }
+        }
     }
 
     public void PlaySmokeAnim()
