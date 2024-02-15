@@ -290,6 +290,14 @@ public class Player : Component
                     placingBlueDoor = true;
                     EnterDoorPlacing();
                 }
+                else
+                {
+                    placingDoor = false;
+                    foreach (var entity in ParentScene.FindEntitiesWithTag("conceptDoor"))
+                    {
+                        ParentScene.DestroyEntity(entity);
+                    }
+                }
             }
             
             else if (InputManager.GetKeyDown(inputs[5]))
@@ -298,6 +306,14 @@ public class Player : Component
                 {
                     placingBlueDoor = false;
                     EnterDoorPlacing();
+                }
+                else
+                {
+                    placingDoor = false;
+                    foreach (var entity in ParentScene.FindEntitiesWithTag("conceptDoor"))
+                    {
+                        ParentScene.DestroyEntity(entity);
+                    }
                 }
             }
         }
