@@ -11,10 +11,8 @@ public class MainScene : GameState
 {
     private Entity tilerEntity;
     private Entity player;
-    private float test;
     public override void Initialize()
     {
-        test = 0;
         tilerEntity = new Entity();
         tilerEntity.Tag = "TileManager";
         player = new Entity();
