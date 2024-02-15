@@ -16,6 +16,7 @@ public class MainScene : GameState
     {
         test = 0;
         tilerEntity = new Entity();
+        tilerEntity.Tag = "TileManager";
         player = new Entity();
         
         AddEntity(tilerEntity);

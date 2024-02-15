@@ -16,7 +16,9 @@ public enum TileType{
     BUTTON_DOWN = 7,
     BUTTON_UP = 8,
     LEVER_RIGHT = 9,
-    LEVER_LEFT = 10
+    LEVER_LEFT = 10,
+    REGULAR_DOOR = 11,
+    LOCKED_DOOR = 12
 }
 
 public class TileNode : Component
@@ -62,6 +64,8 @@ public class TileNode : Component
     public void ChangeType(TileType type)
     {
         Type = type;
+        ParentEntity.RemoveComponent<Sprite>();
+        ParentEntity.AddComponent(new Sprite("./Content/" + Type.ToString() + ".png"));
     }
 
     public override void Initialize()
