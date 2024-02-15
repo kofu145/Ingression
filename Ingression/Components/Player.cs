@@ -25,6 +25,7 @@ public class Player : Component
     private Vector3 lerpFrom;
     private Vector3 lerpTo;
     private TileNode? finishLerp;
+    private TileNode? lerpToFinishLerp;
     private float speed;
     private float lerpT;
     private Entity? doorBlue;
@@ -40,6 +41,7 @@ public class Player : Component
         lerping = false;
         currentTile = null;
         finishLerp = null;
+        lerpToFinishLerp = null;
         lerpFrom = new Vector3();
         lerpTo = new Vector3();
     }
@@ -105,7 +107,7 @@ public class Player : Component
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
-                finishLerp = node.East;
+                lerpToFinishLerp = node.East;
                 break;
         }
 
@@ -341,6 +343,12 @@ public class Player : Component
                 {
                     SetTileNode(finishLerp);
                     finishLerp = null;
+                }
+
+                if (lerpToFinishLerp != null)
+                {
+                    LerpSetTileNode(lerpToFinishLerp);
+                    lerpToFinishLerp = null;
                 }
             }
         }
