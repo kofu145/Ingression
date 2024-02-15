@@ -99,10 +99,19 @@ public class Player : Component
             case TileType.START:
                 break;
             case TileType.ONEWAY_NORTH:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                lerpToFinishLerp = node.North;
                 break;
             case TileType.ONEWAY_SOUTH:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                lerpToFinishLerp = node.South;
                 break;
             case TileType.ONEWAY_WEST:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                lerpToFinishLerp = node.West;
                 break;
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
