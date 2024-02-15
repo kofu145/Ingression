@@ -16,6 +16,7 @@ public enum TileType{
     BUTTON_DOWN = 7,
     BUTTON_UP = 8,
     LEVER_RIGHT = 9,
+    LEVER_LEFT = 10
 }
 
 public class TileNode : Component

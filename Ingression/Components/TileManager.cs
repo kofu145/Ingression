@@ -40,7 +40,7 @@ public class TileManager : Component
                 foreach (char tile in row)
                 {
                     if (tile != ' ') {
-                        tiles[lineNumber, position] = new TileNode(tile - '0');
+                        tiles[lineNumber, position] = new TileNode(Convert.ToInt32(tile.ToString(), 16));
                     }
                     Console.Write(tile);
                     position++;
