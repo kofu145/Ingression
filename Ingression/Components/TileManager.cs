@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using GramEngine.Core;
 using GramEngine.ECS;
+using GramEngine.ECS.Components;
 
 namespace Ingression.Components;
 
@@ -60,7 +61,19 @@ public class TileManager : Component
                             Head = tiles[i, j];
                             tiles[i, j].ChangeValueType(TileType.FLOOR);
                         }
-                        
+                        if (tiles[i, j].Type == TileType.CRATE)
+                        {
+                            tiles[i, j].ChangeValueType(TileType.FLOOR);
+                            var crate = new Entity();
+                            crate.Tag = "crate";
+                            tiles[i, j].Occupant = crate;
+                            crate.AddComponent(new Sprite("./Content/CRATE.png"));
+                            crate.AddComponent(new Crate());
+                            crate.GetComponent<Crate>().currentTile = tiles[i, j];
+                            // crate.Transform.Position = tiles[i, j].ParentEntity.Transform.Position;
+                            crate.Transform.Scale = new Vector2(4, 4);
+
+                        }
                         // check up
                         if ((i - 1) >= 0 && tiles[i - 1, j] != null) {
                             tiles[i, j].North = tiles[i - 1, j];
@@ -84,6 +97,7 @@ public class TileManager : Component
                         newTile.AddComponent(tiles[i, j]);
                         // add entity to ParentScene through ParentScene.AddEntity();
                         ParentScene.AddEntity(newTile);
+
                         // set the entity's position, relative to graph (offset it using i and j)
                         newTile.Transform.Scale = new Vector2(TileSize, TileSize);
                         
@@ -93,9 +107,16 @@ public class TileManager : Component
                             i * 15 * TileSize + (GameStateManager.Window.Height / 2) - (tiles.GetLength(0) * 15 * TileSize) / 2 + TileSize * 15 / 2,
                             1f
                             );
+                        if(tiles[i, j].Occupant != null)
+                        {
+                            tiles[i, j].Occupant.Transform.Position = newTile.Transform.Position;
+                            tiles[i, j].Occupant.Transform.Position.Z = 11f;
+                            ParentScene.AddEntity(tiles[i, j].Occupant);
+                        }
                         if (tiles[i, j].Type == TileType.WALL)
                         {
                             newTile.Transform.Position.Z = 100f;
+
                         }
                     }
 

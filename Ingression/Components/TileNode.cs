@@ -20,7 +20,8 @@ public enum TileType{
     REGULAR_DOOR = 11,
     LOCKED_DOOR = 12,
     SWITCH_DOOR_OPEN = 13,
-    SWITCH_DOOR_CLOSED = 14
+    SWITCH_DOOR_CLOSED = 14,
+    CRATE = 15
 }
 
 public class TileNode : Component
@@ -81,6 +82,7 @@ public class TileNode : Component
         base.Initialize();
         string tileTexture = "./Content/" + Type.ToString() + ".png";
         ParentEntity.AddComponent(new Sprite(tileTexture));
+        Console.WriteLine(tileTexture);
 
         switch (Type)
         {

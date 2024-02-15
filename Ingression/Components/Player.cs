@@ -20,7 +20,7 @@ public class Player : Component
     private const int DoorSize = 4;
     
     private TileNode currentTile;
-    private Keys[] inputs = { Keys.W, Keys.S, Keys.A, Keys.D, Keys.K, Keys.L };
+    private Keys[] inputs = { Keys.W, Keys.S, Keys.A, Keys.D, Keys.K, Keys.L, Keys.R };
     private bool lerping;
     private Vector3 lerpFrom;
     private Vector3 lerpTo;
@@ -32,8 +32,9 @@ public class Player : Component
     private Entity? doorRed;
     private bool placingDoor;
     private bool placingBlueDoor;
+    private string levelName;
 
-    public Player(float speed)
+    public Player(float speed, string levelName)
     {
         this.speed = speed;
         placingDoor = false;
@@ -44,6 +45,7 @@ public class Player : Component
         lerpToFinishLerp = null;
         lerpFrom = new Vector3();
         lerpTo = new Vector3();
+        this.levelName = levelName;
     }
 
     public void SetTileNode(TileNode node)
@@ -66,8 +68,24 @@ public class Player : Component
         // other stuff if matters
     }
 
-    private void CheckMove(TileNode? node)
+    private void CheckMove(Direction direction)
     {
+        TileNode? node = null;
+        switch (direction)
+        {
+            case Direction.NORTH:
+                node = currentTile.North;
+                break;
+            case Direction.EAST:
+                node = currentTile.East;
+                break;
+            case Direction.SOUTH:
+                node = currentTile.South;
+                break;
+            case Direction.WEST:
+                node = currentTile.West;
+                break;
+        }
         if (node == null)
         {
             return;
@@ -92,6 +110,10 @@ public class Player : Component
                             finishLerp = door.OtherDoor?.Tile;
                         }
                     }
+                    else if (node.Occupant.HasComponent<Crate>())
+                    {
+                        CrateMove(direction, node);
+                    }
                 }
                 break;
             case TileType.WALL:
@@ -115,7 +137,12 @@ public class Player : Component
                 break;
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
+                
+                if (node.East.Occupant != null && node.East.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node.East);
+                    
                 LerpSetTileNode(node);
+
                 lerpToFinishLerp = node.East;
                 break;
             case TileType.BUTTON_UP:
@@ -132,6 +159,9 @@ public class Player : Component
             case TileType.BUTTON_DOWN:
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
+                break;
+            case TileType.REGULAR_DOOR:
+                GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString()));
                 break;
             case TileType.LEVER_LEFT:
                 //PlaySmokeAnim();
@@ -159,10 +189,33 @@ public class Player : Component
                 break;
             case TileType.SWITCH_DOOR_OPEN:
                 PlaySmokeAnim();
+                if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node);
                 LerpSetTileNode(node);
                 break;
         }
 
+    }
+
+    private void CrateMove(Direction direction, TileNode node){
+        var crate = node.Occupant.GetComponent<Crate>();
+        TileNode? crateTile = null;
+        switch (direction)
+        {
+            case Direction.NORTH:
+                crateTile = node.North;
+                break;
+            case Direction.EAST:
+                crateTile = node.East;
+                break;
+            case Direction.SOUTH:
+                crateTile = node.South;
+                break;
+            case Direction.WEST:
+                crateTile = node.West;
+                break;
+        } 
+        crate.CheckMove(crateTile);
     }
 
     private void PlaceDoor(Direction direction)
@@ -315,7 +368,7 @@ public class Player : Component
                     PlaceDoor(Direction.NORTH);
                 
                 else
-                    CheckMove(currentTile.North);
+                    CheckMove(Direction.NORTH);
             }
 
             else if (InputManager.GetKeyDown(inputs[1]))
@@ -324,7 +377,7 @@ public class Player : Component
                     PlaceDoor(Direction.SOUTH);
                 
                 else
-                    CheckMove(currentTile.South);
+                    CheckMove(Direction.SOUTH);
             }
 
             else if (InputManager.GetKeyDown(inputs[2]))
@@ -332,7 +385,7 @@ public class Player : Component
                 if (placingDoor)
                     PlaceDoor(Direction.WEST);
                 else {
-                    CheckMove(currentTile.West);
+                    CheckMove(Direction.WEST);
                     ParentEntity.Transform.Scale.X = -Math.Abs(ParentEntity.Transform.Scale.X);
                 }
             }
@@ -342,7 +395,7 @@ public class Player : Component
                 if (placingDoor)
                     PlaceDoor(Direction.EAST);
                 else {
-                    CheckMove(currentTile.East);
+                    CheckMove(Direction.EAST);
                     ParentEntity.Transform.Scale.X = Math.Abs(ParentEntity.Transform.Scale.X);
                 }
             }
@@ -380,6 +433,10 @@ public class Player : Component
                         ParentScene.DestroyEntity(entity);
                     }
                 }
+            }
+            else if (InputManager.GetKeyDown(inputs[6])) 
+            {
+                GameStateManager.SwapScreen(new LevelScene(levelName));
             }
         }
         else

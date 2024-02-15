@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using GramEngine.Core;
 using GramEngine.Core.Input;
 using GramEngine.ECS;
@@ -7,10 +7,15 @@ using Ingression.Components;
 
 namespace Ingression;
 
-public class MainScene : GameState
+public class LevelScene : GameState
 {
     private Entity tilerEntity;
     private Entity player;
+    private string levelName;
+    public LevelScene(string levelName){
+        this.levelName = levelName;
+    }
+
     public override void Initialize()
     {
         tilerEntity = new Entity();
@@ -25,9 +30,9 @@ public class MainScene : GameState
         
         tilerEntity.AddComponent(new TileManager());
         var tileManager = tilerEntity.GetComponent<TileManager>();
-        tileManager.ConstructFromFile(@"./Content/test.txt");
+        tileManager.ConstructFromFile($@"./Content/Levels/{levelName}.txt");
 
-        player.AddComponent(new Player(10f, "test"));
+        player.AddComponent(new Player(10f, levelName));
         player.AddComponent(new Sprite("./Content/bob.png"));
         player.AddComponent(new Animation());
         player.GetComponent<Animation>().LoadTextureAtlas("./Content/bobidle-Sheet.png", "idle", .2f, (16, 16));
