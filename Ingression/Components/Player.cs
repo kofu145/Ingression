@@ -96,6 +96,14 @@ public class Player : Component
                 break;
             case TileType.START:
                 break;
+            case TileType.ONEWAY_NORTH:
+                break;
+            case TileType.ONEWAY_SOUTH:
+                break;
+            case TileType.ONEWAY_WEST:
+                break;
+            case TileType.ONEWAY_EAST:
+                break;
         }
 
     }
@@ -147,7 +155,7 @@ public class Player : Component
         }
     }
 
-    public void PlaySmokeAnim()
+    private void PlaySmokeAnim()
     {
         var smokeEntity = new Entity();
         smokeEntity.Transform.Position = Transform.Position;
