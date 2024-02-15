@@ -6,9 +6,16 @@ using GramEngine.ECS.Components;
 namespace Ingression.Components;
 
 public enum TileType{
-    FLOOR,
-    WALL,
-    START
+    FLOOR = 0,
+    WALL = 1,
+    START = 2,
+    ONEWAY_NORTH = 3,
+    ONEWAY_SOUTH = 4,
+    ONEWAY_EAST = 5, 
+    ONEWAY_WEST = 6,
+    BUTTON_DOWN = 7,
+    BUTTON_UP = 8,
+    LEVER_RIGHT = 9,
 }
 
 public class TileNode : Component
