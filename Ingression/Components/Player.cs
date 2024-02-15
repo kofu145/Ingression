@@ -20,7 +20,7 @@ public class Player : Component
     private const int DoorSize = 4;
     
     private TileNode currentTile;
-    private Keys[] inputs = { Keys.W, Keys.S, Keys.A, Keys.D, Keys.Comma, Keys.Period };
+    private Keys[] inputs = { Keys.W, Keys.S, Keys.A, Keys.D, Keys.K, Keys.L };
     private bool lerping;
     private Vector3 lerpFrom;
     private Vector3 lerpTo;
