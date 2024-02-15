@@ -103,6 +103,8 @@ public class Player : Component
             case TileType.ONEWAY_WEST:
                 break;
             case TileType.ONEWAY_EAST:
+                PlaySmokeAnim();
+                LerpSetTileNode(node.East);
                 break;
         }
 
