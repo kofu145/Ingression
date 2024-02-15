@@ -18,7 +18,9 @@ public enum TileType{
     LEVER_RIGHT = 9,
     LEVER_LEFT = 10,
     REGULAR_DOOR = 11,
-    LOCKED_DOOR = 12
+    LOCKED_DOOR = 12,
+    SWITCH_DOOR_OPEN = 13,
+    SWITCH_DOOR_CLOSED = 14
 }
 
 public class TileNode : Component

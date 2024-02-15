@@ -133,6 +133,34 @@ public class Player : Component
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
                 break;
+            case TileType.LEVER_LEFT:
+                //PlaySmokeAnim();
+                node.ChangeType(TileType.LEVER_RIGHT);
+                temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in temp.AllNodes) {
+                    if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
+                        tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
+                    } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
+                        tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
+                    }
+                }
+                break;
+            case TileType.LEVER_RIGHT:
+                //PlaySmokeAnim();
+                node.ChangeType(TileType.LEVER_LEFT);
+                temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in temp.AllNodes) {
+                    if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
+                        tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
+                    } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
+                        tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
+                    }
+                }
+                break;
+            case TileType.SWITCH_DOOR_OPEN:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                break;
         }
 
     }
