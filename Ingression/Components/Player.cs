@@ -207,7 +207,6 @@ public class Player : Component
         door.GetComponent<Animation>().SetState("doorOpen", false);
         door.GetComponent<Animation>().ResetOnFinish = true;
         door.GetComponent<Animation>().Reset();
-        destination.Occupant = door;
         door.Transform.Position = destination.Transform.Position;
         door.Transform.Scale = new Vector2(DoorSize, DoorSize);
         door.Transform.Position.Z = 9;
@@ -228,7 +227,8 @@ public class Player : Component
                 doorBlue.GetComponent<Door>().OtherDoor = door.GetComponent<Door>();
             door.Tag = "portalRed";
         }
-        
+        destination.Occupant = door;
+
         ParentScene.AddEntity(door);
     }
 

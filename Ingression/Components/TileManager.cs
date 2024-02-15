@@ -8,10 +8,12 @@ public class TileManager : Component
 {
     private const int TileSize = 5;
     public TileNode? Head { get; private set; }
+    public List<TileNode> AllNodes;
 
     public TileManager()
     {
         Head = null;
+        AllNodes = new List<TileNode>();
     }
 
     public override void Initialize()
@@ -53,9 +55,10 @@ public class TileManager : Component
                 for(int j = 0; j < tiles.GetLength(1); j++) {
                     
                     if (tiles[i, j] != null) {
-                        if (Head == null)
+                        if (Head == null && tiles[i, j].Type == TileType.START)
                         {
                             Head = tiles[i, j];
+                            tiles[i, j].ChangeType(TileType.FLOOR);
                         }
                         
                         // check up
@@ -74,7 +77,7 @@ public class TileManager : Component
                         if ((j + 1) < tiles.GetLength(1) && tiles[i, j + 1] != null) {
                             tiles[i, j].East = tiles[i, j + 1];
                         }
-                        
+                        AllNodes.Add(tiles[i, j]);
                         // create new entity
                         Entity newTile = new Entity();
                         // new entity.addcomponent tiles[i,j] (add our tile component to entity)

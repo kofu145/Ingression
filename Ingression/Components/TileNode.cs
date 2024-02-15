@@ -51,6 +51,11 @@ public class TileNode : Component
         this.Type = (TileType)tileType;
     }
 
+    public void ChangeType(TileType type)
+    {
+        Type = type;
+    }
+
     public override void Initialize()
     {
         base.Initialize();
