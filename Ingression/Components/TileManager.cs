@@ -1,10 +1,12 @@
 ﻿using System.Numerics;
+using GramEngine.Core;
 using GramEngine.ECS;
 
 namespace Ingression.Components;
 
 public class TileManager : Component
 {
+    private const int TileSize = 5;
     public TileNode? Head { get; private set; }
 
     public TileManager()
@@ -80,9 +82,14 @@ public class TileManager : Component
                         // add entity to ParentScene through ParentScene.AddEntity();
                         ParentScene.AddEntity(newTile);
                         // set the entity's position, relative to graph (offset it using i and j)
-
-                        newTile.Transform.Scale = new Vector2(4f, 4f);
-                        newTile.Transform.Position = new Vector3(j * 15*4 + 100, i * 15*4 + 100, 1f);
+                        newTile.Transform.Scale = new Vector2(TileSize, TileSize);
+                        
+                        // How did I find the numbers below? I fucked around and found out.
+                        newTile.Transform.Position = new Vector3(
+                            j * 15 * TileSize + GameStateManager.Window.Width / 2 - tiles.GetLength(1) * 15 * TileSize / 2 + TileSize * 15 / 2, 
+                            i * 15 * TileSize + (GameStateManager.Window.Height / 2) - (tiles.GetLength(0) * 15 * TileSize) / 2 + TileSize * 15 / 2,
+                            1f
+                            );
                         if (tiles[i, j].Type == TileType.WALL)
                         {
                             newTile.Transform.Position.Z = 100f;

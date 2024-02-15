@@ -24,12 +24,17 @@ public class TileNode : Component
     public TileNode? West;
     public TileNode? South;
 
+    // For objects that might be on the tile
+    public Entity? Occupant;
+
     public TileNode(TileType tileType)
     {
         North = null;
         East = null;
         West = null;
         South = null;
+        
+        Occupant = null;
 
         this.Type = tileType;
     }
@@ -40,6 +45,8 @@ public class TileNode : Component
         East = null;
         West = null;
         South = null;
+        
+        Occupant = null;
 
         this.Type = (TileType)tileType;
     }
