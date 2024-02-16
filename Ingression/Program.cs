@@ -7,11 +7,11 @@ internal class Program
         WindowSettings windowSettings = new WindowSettings()
         {
             NaiveCollision = true,
-            WindowTitle = "Pong demo",
+            WindowTitle = "Ingression",
             Width = 1280,
             Height = 720
         };
-        Window window = new Window(new MainScene(), windowSettings);
+        Window window = new Window(new LevelScene("1"), windowSettings);
         window.Run();
 
     }

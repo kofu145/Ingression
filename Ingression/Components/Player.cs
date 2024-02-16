@@ -53,7 +53,7 @@ public class Player : Component
         currentTile = node;
         var tilePos = currentTile.Transform.Position;
         Transform.Position = tilePos;
-        Transform.Position.Y -= 7;
+        //Transform.Position.Y -= 9;
         Transform.Position.Z = 10;
         // other stuff if matters
     }
@@ -64,7 +64,7 @@ public class Player : Component
         var tilePos = currentTile.Transform.Position;
         lerping = true;
         lerpFrom = Transform.Position;
-        lerpTo = new Vector3(tilePos.X, tilePos.Y - 7, 10);
+        lerpTo = new Vector3(tilePos.X, tilePos.Y, 10);
         // other stuff if matters
     }
 

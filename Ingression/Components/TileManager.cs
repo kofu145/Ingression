@@ -7,7 +7,8 @@ namespace Ingression.Components;
 
 public class TileManager : Component
 {
-    private const int TileSize = 5;
+    private const int TileSize = 16;
+    private const int TileScale = 5;
     public TileNode? Head { get; private set; }
     public List<TileNode> AllNodes;
 
@@ -99,12 +100,12 @@ public class TileManager : Component
                         ParentScene.AddEntity(newTile);
 
                         // set the entity's position, relative to graph (offset it using i and j)
-                        newTile.Transform.Scale = new Vector2(TileSize, TileSize);
+                        newTile.Transform.Scale = new Vector2(TileScale, TileScale);
                         
                         // How did I find the numbers below? I fucked around and found out.
                         newTile.Transform.Position = new Vector3(
-                            j * 15 * TileSize + GameStateManager.Window.Width / 2 - tiles.GetLength(1) * 15 * TileSize / 2 + TileSize * 15 / 2, 
-                            i * 15 * TileSize + (GameStateManager.Window.Height / 2) - (tiles.GetLength(0) * 15 * TileSize) / 2 + TileSize * 15 / 2,
+                            j * TileSize * TileScale + GameStateManager.Window.Width / 2 - tiles.GetLength(1) * TileSize * TileScale / 2 + TileScale * TileSize / 2, 
+                            i * TileSize * TileScale + (GameStateManager.Window.Height / 2) - (tiles.GetLength(0) * TileSize * TileScale) / 2 + TileScale * TileSize / 2,
                             1f
                             );
                         if(tiles[i, j].Occupant != null)
