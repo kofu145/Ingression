@@ -17,11 +17,16 @@ public class MainScene : GameState
         tilerEntity.Tag = "TileManager";
         player = new Entity();
         
+        Entity talk = new Entity();
+        talk.AddComponent(new ConversationManager("Content/Dialogue/diagtest.txt", "bob"));
+        AddEntity(talk);
+
+        
         AddEntity(tilerEntity);
         
         base.Initialize();
 
-        
+        talk.GetComponent<ConversationManager>().StartDialogue();
         
         tilerEntity.AddComponent(new TileManager());
         var tileManager = tilerEntity.GetComponent<TileManager>();
@@ -45,6 +50,7 @@ public class MainScene : GameState
         
         AddEntity(player);
         AddEntity(bgEntity);
+        
 
     }
 
