@@ -2,6 +2,7 @@
 using GramEngine.Core;
 using GramEngine.ECS;
 using GramEngine.ECS.Components;
+using Ingression;
 
 namespace Ingression.Components;
 
@@ -42,7 +43,7 @@ public class TileManager : Component
                 foreach (char tile in row)
                 {
                     if (tile != ' ') {
-                        tiles[lineNumber, position] = new TileNode(Convert.ToInt32(tile.ToString(), 16));
+                        tiles[lineNumber, position] = new TileNode(MathExtend.Decode(tile.ToString(), 16));
                     }
                     Console.Write(tile);
                     position++;
@@ -104,8 +105,10 @@ public class TileManager : Component
                         
                         // How did I find the numbers below? I fucked around and found out.
                         newTile.Transform.Position = new Vector3(
-                            j * TileSize * TileScale + GameStateManager.Window.Width / 2 - tiles.GetLength(1) * TileSize * TileScale / 2 + TileScale * TileSize / 2, 
-                            i * TileSize * TileScale + (GameStateManager.Window.Height / 2) - (tiles.GetLength(0) * TileSize * TileScale) / 2 + TileScale * TileSize / 2,
+                            j * TileSize * TileScale + (float)GameStateManager.Window.settings.BaseWindowWidth / 2 
+                            - (tiles.GetLength(1) * TileSize * TileScale) / 2 + TileSize * TileScale / 2, 
+                            i * TileSize * TileScale + (float)GameStateManager.Window.settings.BaseWindowHeight / 2
+                            - (tiles.GetLength(0) * TileSize * TileScale) / 2 + TileSize * TileScale / 2,
                             1f
                             );
                         if(tiles[i, j].Occupant != null)

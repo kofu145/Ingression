@@ -16,12 +16,13 @@ public enum TileType{
     BUTTON_DOWN = 7,
     BUTTON_UP = 8,
     LEVER_RIGHT = 9,
-    LEVER_LEFT = 10,
+    LEVER_LEFT = 10, 
     REGULAR_DOOR = 11,
     LOCKED_DOOR = 12,
     SWITCH_DOOR_OPEN = 13,
     SWITCH_DOOR_CLOSED = 14,
-    CRATE = 15
+    CRATE = 15,
+    KEY = 16,
 }
 
 public class TileNode : Component

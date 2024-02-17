@@ -148,13 +148,6 @@ public class Player : Component
             case TileType.BUTTON_UP:
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
-                node.ChangeType(TileType.BUTTON_DOWN);
-                var temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                foreach(TileNode tile in temp.AllNodes){
-                    if(tile.Type == TileType.LOCKED_DOOR) {
-                        tile.ChangeType(TileType.REGULAR_DOOR);
-                    }
-                }
                 break;
             case TileType.BUTTON_DOWN:
                 PlaySmokeAnim();
@@ -166,8 +159,8 @@ public class Player : Component
             case TileType.LEVER_LEFT:
                 //PlaySmokeAnim();
                 node.ChangeType(TileType.LEVER_RIGHT);
-                temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                foreach(TileNode tile in temp.AllNodes) {
+                var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in tm.AllNodes) {
                     if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
                         tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
                     } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
@@ -178,8 +171,8 @@ public class Player : Component
             case TileType.LEVER_RIGHT:
                 //PlaySmokeAnim();
                 node.ChangeType(TileType.LEVER_LEFT);
-                temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                foreach(TileNode tile in temp.AllNodes) {
+                tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in tm.AllNodes) {
                     if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
                         tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
                     } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
@@ -192,6 +185,19 @@ public class Player : Component
                 if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
                     CrateMove(direction, node);
                 LerpSetTileNode(node);
+                break;
+            
+            case TileType.KEY:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                node.ChangeType(TileType.FLOOR);
+                var temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+                foreach(TileNode tile in temp.AllNodes){
+                    if(tile.Type == TileType.LOCKED_DOOR) {
+                        tile.ChangeType(TileType.REGULAR_DOOR);
+                    }
+                }
+
                 break;
         }
 
