@@ -69,7 +69,7 @@ public class TileManager : Component
                             var crate = new Entity();
                             crate.Tag = "crate";
                             tiles[i, j].Occupant = crate;
-                            crate.AddComponent(new Sprite("./Content/CRATE.png"));
+                            crate.AddComponent(new Sprite("./Content/Sprites/CRATE.png"));
                             crate.AddComponent(new Crate());
                             crate.GetComponent<Crate>().currentTile = tiles[i, j];
                             // crate.Transform.Position = tiles[i, j].ParentEntity.Transform.Position;

@@ -184,6 +184,25 @@ public class Player : Component
                 else
                     LerpSetTileNode(node);
                 break;
+            
+            case TileType.BLUE_BUTTON_UP:
+                PlaySmokeAnim();
+                if (node.Occupant == null)    
+                {
+                    LerpSetTileNode(node);
+                    TriggerSwitchBDoors();
+                    node.ChangeType(TileType.BLUE_BUTTON_DOWN);
+                    sound.Play("switch");
+                }
+                break;
+            case TileType.BLUE_BUTTON_DOWN:
+                PlaySmokeAnim();
+
+                if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node);
+                else
+                    LerpSetTileNode(node);
+                break;
             case TileType.REGULAR_DOOR:
                 GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString()));
                 break;
@@ -206,7 +225,13 @@ public class Player : Component
                 else
                     LerpSetTileNode(node);
                 break;
-            
+            case TileType.B_SWITCHDOOR_OPEN:
+                PlaySmokeAnim();
+                if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node);
+                else
+                    LerpSetTileNode(node);
+                break;
             case TileType.KEY:
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
@@ -219,6 +244,18 @@ public class Player : Component
                 }
                 sound.Play("key");
                 break;
+            case TileType.BLUE_LEVER_LEFT:
+                //PlaySmokeAnim();
+                node.ChangeType(TileType.BLUE_LEVER_RIGHT);
+                TriggerSwitchBDoors();
+                sound.Play("switch");
+                break;
+            case TileType.BLUE_LEVER_RIGHT:
+                //PlaySmokeAnim();
+                node.ChangeType(TileType.BLUE_LEVER_LEFT);
+                TriggerSwitchBDoors();
+                sound.Play("switch");
+                break;
         }
         
         if (lerping && prevNode.Type == TileType.BUTTON_DOWN)
@@ -226,7 +263,11 @@ public class Player : Component
             prevNode.ChangeType(TileType.BUTTON_UP);
             TriggerSwitchDoors();
         }
-        
+        else if (lerping && prevNode.Type == TileType.BLUE_BUTTON_DOWN)
+        {
+            prevNode.ChangeType(TileType.BLUE_BUTTON_UP);
+            TriggerSwitchBDoors();
+        }
 
     }
 
@@ -260,6 +301,18 @@ public class Player : Component
                 tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
             } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
                 tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
+            }
+        }
+    }
+
+    private void TriggerSwitchBDoors()
+    {
+        var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+        foreach(TileNode tile in tm.AllNodes) {
+            if(tile.Type == TileType.B_SWITCHDOOR_OPEN) {
+                tile.ChangeType(TileType.B_SWITCHDOOR_CLOSED);
+            } else if(tile.Type == TileType.B_SWITCHDOOR_CLOSED) {
+                tile.ChangeType(TileType.B_SWITCHDOOR_OPEN);
             }
         }
     }
@@ -317,9 +370,9 @@ public class Player : Component
         smokeEntity.Transform.Scale = new Vector2(DoorSize, DoorSize);
         smokeEntity.Transform.Position.Y += 7;
         smokeEntity.Transform.Position.Z = 11;
-        smokeEntity.AddComponent(new Sprite("./Content/empty.png"));
+        smokeEntity.AddComponent(new Sprite("./Content/Sprites/empty.png"));
         smokeEntity.AddComponent(new Animation(true));
-        smokeEntity.GetComponent<Animation>().LoadTextureAtlas("./Content/smokeground-Sheet.png", "groundsmoke", .08f, (16, 16));
+        smokeEntity.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/smokeground-Sheet.png", "groundsmoke", .08f, (16, 16));
         smokeEntity.GetComponent<Animation>().SetState("groundsmoke", false);
         ParentScene.AddEntity(smokeEntity);
         sound.Play("dash");
@@ -346,7 +399,10 @@ public class Player : Component
     {
         var conceptDoor = new Entity();
         conceptDoor.Tag = "conceptDoor";
-        conceptDoor.AddComponent(new Sprite("./Content/conceptualdoor.png"));
+        if (placingBlueDoor)
+            conceptDoor.AddComponent(new Sprite("./Content/Sprites/conceptualdoor.png"));
+        else
+            conceptDoor.AddComponent(new Sprite("./Content/Sprites/conceptualdoor_red.png"));
         conceptDoor.Transform.Position = node.Transform.Position;
         conceptDoor.Transform.Scale = new Vector2(DoorSize, DoorSize);
         conceptDoor.Transform.Position.Z = 9;
@@ -356,15 +412,15 @@ public class Player : Component
     private void PlacePortal(TileNode destination)
     {
         Entity door = new Entity();
-        door.AddComponent(new Sprite("./Content/empty.png"));
+        door.AddComponent(new Sprite("./Content/Sprites/empty.png"));
         door.AddComponent(new Animation());
         if (placingBlueDoor) {
             door.AddComponent(new Door(destination, doorRed?.GetComponent<Door>()));
-            door.GetComponent<Animation>().LoadTextureAtlas("./Content/doorBlue-Sheet.png", "doorOpen", .08f, (16, 16));
+            door.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/doorBlue-Sheet.png", "doorOpen", .08f, (16, 16));
         }
         else {
             door.AddComponent(new Door(destination, doorBlue?.GetComponent<Door>()));
-            door.GetComponent<Animation>().LoadTextureAtlas("./Content/doorRed-Sheet.png", "doorOpen", .08f, (16, 16));
+            door.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/doorRed-Sheet.png", "doorOpen", .08f, (16, 16));
         }
         
         door.GetComponent<Animation>().SetState("doorOpen", false);

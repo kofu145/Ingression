@@ -34,9 +34,9 @@ public class Crate : Component
         smokeEntity.Transform.Scale = new Vector2(4, 4);
         smokeEntity.Transform.Position.Y += 7;
         smokeEntity.Transform.Position.Z = 11;
-        smokeEntity.AddComponent(new Sprite("./Content/empty.png"));
+        smokeEntity.AddComponent(new Sprite("./Content/Sprites/empty.png"));
         smokeEntity.AddComponent(new Animation(true));
-        smokeEntity.GetComponent<Animation>().LoadTextureAtlas("./Content/smokeground-Sheet.png", "groundsmoke", .08f, (16, 16));
+        smokeEntity.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/smokeground-Sheet.png", "groundsmoke", .08f, (16, 16));
         smokeEntity.GetComponent<Animation>().SetState("groundsmoke", false);
         ParentScene.AddEntity(smokeEntity);
         
@@ -76,7 +76,23 @@ public class Crate : Component
                     if (node.Occupant.HasComponent<Door>())
                     {
                         var door = node.Occupant?.GetComponent<Door>();
-                        if (door.OtherDoor != null)
+                        TileNode? doorDir = null;
+                        switch (direction)
+                        {
+                            case Direction.NORTH:
+                                doorDir = door.OtherDoor?.Tile.North;
+                                break;
+                            case Direction.EAST:
+                                doorDir = door.OtherDoor?.Tile.East;
+                                break;
+                            case Direction.SOUTH:
+                                doorDir = door.OtherDoor?.Tile.South;
+                                break;
+                            case Direction.WEST:
+                                doorDir = door.OtherDoor?.Tile.West;
+                                break;
+                        }
+                        if (door.OtherDoor != null && doorDir != null && doorDir.Type == TileType.FLOOR)
                         {
                             node.Occupant.GetComponent<Animation>().Play();
                             door.OtherDoor.ParentEntity.GetComponent<Animation>().Play();
@@ -121,11 +137,27 @@ public class Crate : Component
                 if(node.Occupant == null) 
                     LerpSetTileNode(node);
                 break;
+            case TileType.BLUE_BUTTON_UP:
+                if (node.Occupant == null)    
+                {
+                    LerpSetTileNode(node);
+                    TriggerSwitchBDoors();
+                    node.ChangeType(TileType.BLUE_BUTTON_DOWN);
+                }
+                break;
+            case TileType.BLUE_BUTTON_DOWN:
+                if(node.Occupant == null) 
+                    LerpSetTileNode(node);
+                break;
             case TileType.LEVER_LEFT:
                 break;
             case TileType.LEVER_RIGHT:
                 break;
             case TileType.SWITCH_DOOR_OPEN:
+                if(node.Occupant == null) 
+                    LerpSetTileNode(node);
+                break;
+            case TileType.B_SWITCHDOOR_OPEN:
                 if(node.Occupant == null) 
                     LerpSetTileNode(node);
                 break;
@@ -135,6 +167,11 @@ public class Crate : Component
         {
             prevNode.ChangeType(TileType.BUTTON_UP);
             TriggerSwitchDoors();
+        }
+        else if (lerping && prevNode.Type == TileType.BLUE_BUTTON_DOWN)
+        {
+            prevNode.ChangeType(TileType.BLUE_BUTTON_UP);
+            TriggerSwitchBDoors();
         }
     }
     
@@ -149,11 +186,26 @@ public class Crate : Component
             }
         }
     }
+    
+    private void TriggerSwitchBDoors()
+    {
+        var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+        foreach(TileNode tile in tm.AllNodes) {
+            if(tile.Type == TileType.B_SWITCHDOOR_OPEN) {
+                tile.ChangeType(TileType.B_SWITCHDOOR_CLOSED);
+            } else if(tile.Type == TileType.B_SWITCHDOOR_CLOSED) {
+                tile.ChangeType(TileType.B_SWITCHDOOR_OPEN);
+            }
+        }
+    }
+    
     // setTileNode (copy + paste)
     public void SetTileNode(TileNode node)
     {
-        currentTile.Occupant = null;
-        node.Occupant = ParentEntity;
+        if (currentTile.Occupant == ParentEntity)
+            currentTile.Occupant = null;
+        if (node.Occupant == null)
+            node.Occupant = ParentEntity;
         currentTile = node;
         var tilePos = currentTile.Transform.Position;
         Transform.Position = tilePos;
@@ -163,8 +215,10 @@ public class Crate : Component
 
     private void LerpSetTileNode(TileNode node)
     {
-        currentTile.Occupant = null;
-        node.Occupant = ParentEntity;
+        if (currentTile.Occupant == ParentEntity)
+            currentTile.Occupant = null;
+        if (node.Occupant == null)
+            node.Occupant = ParentEntity;
         currentTile = node;
         var tilePos = currentTile.Transform.Position;
         lerping = true;

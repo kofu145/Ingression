@@ -33,9 +33,9 @@ public class MainScene : GameState
         tileManager.ConstructFromFile(@"./Content/test.txt");
 
         player.AddComponent(new Player(10f, "test"));
-        player.AddComponent(new Sprite("./Content/bob.png"));
+        player.AddComponent(new Sprite("./Content/Sprites/bob.png"));
         player.AddComponent(new Animation());
-        player.GetComponent<Animation>().LoadTextureAtlas("./Content/bobidle-Sheet.png", "idle", .2f, (16, 16));
+        player.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/bobidle-Sheet.png", "idle", .2f, (16, 16));
         player.GetComponent<Animation>().SetState("idle");
         
         player.GetComponent<Player>().SetTileNode(tileManager.Head);
@@ -43,7 +43,7 @@ public class MainScene : GameState
         player.Transform.Scale = new Vector2(3, 3);
 
         var bgEntity = new Entity();
-        bgEntity.AddComponent(new Sprite("./Content/backgroundtext.png"));
+        bgEntity.AddComponent(new Sprite("./Content/Sprites/backgroundtext.png"));
         bgEntity.Transform.Position =
             new Vector3(GameStateManager.Window.Width / 2, GameStateManager.Window.Height / 2, 0);
         bgEntity.Transform.Scale = new Vector2(5, 5);

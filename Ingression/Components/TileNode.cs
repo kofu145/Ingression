@@ -23,6 +23,13 @@ public enum TileType{
     SWITCH_DOOR_CLOSED = 14,
     CRATE = 15,
     KEY = 16,
+    B_SWITCHDOOR_OPEN = 17,
+    B_SWITCHDOOR_CLOSED = 18,
+    BLUE_BUTTON_DOWN = 19,
+    BLUE_BUTTON_UP = 20,
+    BLUE_LEVER_RIGHT = 21,
+    BLUE_LEVER_LEFT = 22
+    
 }
 
 public class TileNode : Component
@@ -69,7 +76,7 @@ public class TileNode : Component
     {
         Type = type;
         ParentEntity.RemoveComponent<Sprite>();
-        ParentEntity.AddComponent(new Sprite("./Content/" + Type.ToString() + ".png"));
+        ParentEntity.AddComponent(new Sprite("./Content/Sprites/" + Type.ToString() + ".png"));
     }
 
     // Use this only in the rarest of circumstances!!! (basically never unless your name is TileManager)
@@ -81,7 +88,7 @@ public class TileNode : Component
     public override void Initialize()
     {
         base.Initialize();
-        string tileTexture = "./Content/" + Type.ToString() + ".png";
+        string tileTexture = "./Content/Sprites/" + Type.ToString() + ".png";
         ParentEntity.AddComponent(new Sprite(tileTexture));
 
         switch (Type)
