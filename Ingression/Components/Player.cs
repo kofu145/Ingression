@@ -11,7 +11,8 @@ public enum Direction
     NORTH,
     SOUTH,
     EAST,
-    WEST
+    WEST,
+    NONE
 }
 
 public class Player : Component
@@ -26,6 +27,7 @@ public class Player : Component
     private Vector3 lerpTo;
     private TileNode? finishLerp;
     private TileNode? lerpToFinishLerp;
+    private Direction finishLerpDir;
     private float speed;
     private float lerpT;
     private Entity? doorBlue;
@@ -33,6 +35,7 @@ public class Player : Component
     private bool placingDoor;
     private bool placingBlueDoor;
     private string levelName;
+    private Sound sound;
 
     public Player(float speed, string levelName)
     {
@@ -45,6 +48,7 @@ public class Player : Component
         lerpToFinishLerp = null;
         lerpFrom = new Vector3();
         lerpTo = new Vector3();
+        finishLerpDir = Direction.NONE;
         this.levelName = levelName;
     }
 
@@ -91,6 +95,8 @@ public class Player : Component
             return;
         }
 
+        var prevNode = currentTile;
+
         switch (node.Type)
         {
             case TileType.FLOOR:
@@ -108,6 +114,7 @@ public class Player : Component
                             door.OtherDoor.ParentEntity.GetComponent<Animation>().Play();
                             LerpSetTileNode(node);
                             finishLerp = door.OtherDoor?.Tile;
+                            sound.Play("doorenter");
                         }
                     }
                     else if (node.Occupant.HasComponent<Crate>())
@@ -122,36 +129,53 @@ public class Player : Component
                 break;
             case TileType.ONEWAY_NORTH:
                 PlaySmokeAnim();
+                if (node.North.Occupant != null && node.North.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node.North);
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.North;
+                //lerpToFinishLerp = node.North;
+                finishLerpDir = Direction.NORTH;
                 break;
             case TileType.ONEWAY_SOUTH:
                 PlaySmokeAnim();
+                if (node.South.Occupant != null && node.South.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node.South);
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.South;
+                //lerpToFinishLerp = node.South;
+                finishLerpDir = Direction.SOUTH;
                 break;
             case TileType.ONEWAY_WEST:
                 PlaySmokeAnim();
+                if (node.West.Occupant != null && node.West.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node.West);
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.West;
+                //lerpToFinishLerp = node.West;
+                finishLerpDir = Direction.WEST;
                 break;
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
-                
                 if (node.East.Occupant != null && node.East.Occupant.HasComponent<Crate>())    
                     CrateMove(direction, node.East);
-                    
                 LerpSetTileNode(node);
-
-                lerpToFinishLerp = node.East;
+                //lerpToFinishLerp = node.East;
+                finishLerpDir = Direction.EAST;
                 break;
             case TileType.BUTTON_UP:
                 PlaySmokeAnim();
-                LerpSetTileNode(node);
+                if (node.Occupant == null)    
+                {
+                    LerpSetTileNode(node);
+                    TriggerSwitchDoors();
+                    node.ChangeType(TileType.BUTTON_DOWN);
+                    sound.Play("switch");
+                }
                 break;
             case TileType.BUTTON_DOWN:
                 PlaySmokeAnim();
-                LerpSetTileNode(node);
+
+                if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node);
+                else
+                    LerpSetTileNode(node);
                 break;
             case TileType.REGULAR_DOOR:
                 GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString()));
@@ -159,26 +183,14 @@ public class Player : Component
             case TileType.LEVER_LEFT:
                 //PlaySmokeAnim();
                 node.ChangeType(TileType.LEVER_RIGHT);
-                var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                foreach(TileNode tile in tm.AllNodes) {
-                    if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
-                        tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
-                    } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
-                        tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
-                    }
-                }
+                TriggerSwitchDoors();
+                sound.Play("switch");
                 break;
             case TileType.LEVER_RIGHT:
                 //PlaySmokeAnim();
                 node.ChangeType(TileType.LEVER_LEFT);
-                tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                foreach(TileNode tile in tm.AllNodes) {
-                    if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
-                        tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
-                    } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
-                        tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
-                    }
-                }
+                TriggerSwitchDoors();
+                sound.Play("switch");
                 break;
             case TileType.SWITCH_DOOR_OPEN:
                 PlaySmokeAnim();
@@ -197,9 +209,16 @@ public class Player : Component
                         tile.ChangeType(TileType.REGULAR_DOOR);
                     }
                 }
-
+                sound.Play("key");
                 break;
         }
+        
+        if (lerping && prevNode.Type == TileType.BUTTON_DOWN)
+        {
+            prevNode.ChangeType(TileType.BUTTON_UP);
+            TriggerSwitchDoors();
+        }
+        
 
     }
 
@@ -222,8 +241,20 @@ public class Player : Component
                 break;
         } 
         crate.CheckMove(crateTile);
+        sound.Play("cratemove");
     }
 
+    private void TriggerSwitchDoors()
+    {
+        var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+        foreach(TileNode tile in tm.AllNodes) {
+            if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
+                tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
+            } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
+                tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
+            }
+        }
+    }
     private void PlaceDoor(Direction direction)
     {
         switch (direction)
@@ -283,7 +314,7 @@ public class Player : Component
         smokeEntity.GetComponent<Animation>().LoadTextureAtlas("./Content/smokeground-Sheet.png", "groundsmoke", .08f, (16, 16));
         smokeEntity.GetComponent<Animation>().SetState("groundsmoke", false);
         ParentScene.AddEntity(smokeEntity);
-        
+        sound.Play("dash");
     }
 
     private void EnterDoorPlacing()
@@ -354,11 +385,13 @@ public class Player : Component
         destination.Occupant = door;
 
         ParentScene.AddEntity(door);
+        sound.Play("doormake");
     }
 
     public override void Initialize()
     {
         base.Initialize();
+        sound = ParentEntity.GetComponent<Sound>();
         Transform.Scale = new Vector2(PlayerSize, PlayerSize);
     }
 
@@ -442,6 +475,7 @@ public class Player : Component
             }
             else if (InputManager.GetKeyDown(inputs[6])) 
             {
+                sound.Play("reset");
                 GameStateManager.SwapScreen(new LevelScene(levelName));
             }
         }
@@ -459,12 +493,19 @@ public class Player : Component
                     SetTileNode(finishLerp);
                     finishLerp = null;
                 }
-
                 if (lerpToFinishLerp != null)
                 {
                     LerpSetTileNode(lerpToFinishLerp);
                     lerpToFinishLerp = null;
                 }
+
+                if (finishLerpDir != Direction.NONE)
+                {
+                    var tmp = (Direction)(int)finishLerpDir;
+                    finishLerpDir = Direction.NONE;
+                    CheckMove(tmp);
+                }
+                
             }
         }
 

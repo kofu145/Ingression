@@ -46,6 +46,8 @@ public class Crate : Component
         {
             return;
         }
+        var prevNode = currentTile;
+
         switch(node.Type) 
         {
             case TileType.FLOOR:
@@ -77,12 +79,7 @@ public class Crate : Component
                 {
                     LerpSetTileNode(node);
                     node.ChangeType(TileType.BUTTON_DOWN);
-                    var temp = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
-                    foreach(TileNode tile in temp.AllNodes){
-                        if(tile.Type == TileType.LOCKED_DOOR) {
-                            tile.ChangeType(TileType.REGULAR_DOOR);
-                        }
-                    }
+                    TriggerSwitchDoors();
                 }
                 break;
             case TileType.BUTTON_DOWN:
@@ -97,6 +94,24 @@ public class Crate : Component
                 if(node.Occupant == null) 
                     LerpSetTileNode(node);
                 break;
+        }
+        
+        if (lerping && prevNode.Type == TileType.BUTTON_DOWN)
+        {
+            prevNode.ChangeType(TileType.BUTTON_UP);
+            TriggerSwitchDoors();
+        }
+    }
+    
+    private void TriggerSwitchDoors()
+    {
+        var tm = ParentScene.FindWithTag("TileManager").GetComponent<TileManager>();
+        foreach(TileNode tile in tm.AllNodes) {
+            if(tile.Type == TileType.SWITCH_DOOR_OPEN) {
+                tile.ChangeType(TileType.SWITCH_DOOR_CLOSED);
+            } else if(tile.Type == TileType.SWITCH_DOOR_CLOSED) {
+                tile.ChangeType(TileType.SWITCH_DOOR_OPEN);
+            }
         }
     }
     // setTileNode (copy + paste)

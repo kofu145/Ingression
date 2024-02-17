@@ -35,6 +35,16 @@ public class LevelScene : GameState
         player.AddComponent(new Player(10f, levelName));
         player.AddComponent(new Sprite("./Content/bob.png"));
         player.AddComponent(new Animation());
+        player.AddComponent(new Sound());
+        var sound = player.GetComponent<Sound>();
+        sound.AddSound("./Content/Sound/key.wav", "key");
+        sound.AddSound("./Content/Sound/dash.wav", "dash");
+        sound.AddSound("./Content/Sound/cratemove.wav", "cratemove");
+        sound.AddSound("./Content/Sound/switch.wav", "switch");
+        sound.AddSound("./Content/Sound/doormake.wav", "doormake");
+        sound.AddSound("./Content/Sound/doorenter.wav", "doorenter");
+        sound.AddSound("./Content/Sound/reset.wav", "reset");
+        
         player.GetComponent<Animation>().LoadTextureAtlas("./Content/bobidle-Sheet.png", "idle", .2f, (16, 16));
         player.GetComponent<Animation>().SetState("idle");
         

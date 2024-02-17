@@ -83,7 +83,6 @@ public class TileNode : Component
         base.Initialize();
         string tileTexture = "./Content/" + Type.ToString() + ".png";
         ParentEntity.AddComponent(new Sprite(tileTexture));
-        Console.WriteLine(tileTexture);
 
         switch (Type)
         {
