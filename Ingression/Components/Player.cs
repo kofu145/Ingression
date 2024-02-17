@@ -203,7 +203,8 @@ public class Player : Component
                 PlaySmokeAnim();
                 if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
                     CrateMove(direction, node);
-                LerpSetTileNode(node);
+                else
+                    LerpSetTileNode(node);
                 break;
             
             case TileType.KEY:
