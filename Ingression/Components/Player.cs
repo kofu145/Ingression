@@ -134,6 +134,7 @@ public class Player : Component
                 LerpSetTileNode(node);
                 //lerpToFinishLerp = node.North;
                 finishLerpDir = Direction.NORTH;
+                sound.Play("oneway");
                 break;
             case TileType.ONEWAY_SOUTH:
                 PlaySmokeAnim();
@@ -142,6 +143,7 @@ public class Player : Component
                 LerpSetTileNode(node);
                 //lerpToFinishLerp = node.South;
                 finishLerpDir = Direction.SOUTH;
+                sound.Play("oneway");
                 break;
             case TileType.ONEWAY_WEST:
                 PlaySmokeAnim();
@@ -150,6 +152,7 @@ public class Player : Component
                 LerpSetTileNode(node);
                 //lerpToFinishLerp = node.West;
                 finishLerpDir = Direction.WEST;
+                sound.Play("oneway");
                 break;
             case TileType.ONEWAY_EAST:
                 PlaySmokeAnim();
@@ -158,6 +161,7 @@ public class Player : Component
                 LerpSetTileNode(node);
                 //lerpToFinishLerp = node.East;
                 finishLerpDir = Direction.EAST;
+                sound.Play("oneway");
                 break;
             case TileType.BUTTON_UP:
                 PlaySmokeAnim();

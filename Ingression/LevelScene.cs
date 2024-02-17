@@ -44,6 +44,7 @@ public class LevelScene : GameState
         sound.AddSound("./Content/Sound/doormake.wav", "doormake");
         sound.AddSound("./Content/Sound/doorenter.wav", "doorenter");
         sound.AddSound("./Content/Sound/reset.wav", "reset");
+        sound.AddSound("./Content/Sound/oneway.wav", "oneway");
         
         player.GetComponent<Animation>().LoadTextureAtlas("./Content/bobidle-Sheet.png", "idle", .2f, (16, 16));
         player.GetComponent<Animation>().SetState("idle");
