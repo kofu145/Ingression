@@ -256,6 +256,10 @@ public class Player : Component
                 TriggerSwitchBDoors();
                 sound.Play("switch");
                 break;
+            case TileType.CRATEHOLE_FILLED:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                break;
         }
         
         if (lerping && prevNode.Type == TileType.BUTTON_DOWN)
@@ -543,7 +547,7 @@ public class Player : Component
                 GameStateManager.SwapScreen(new LevelScene(levelName));
             }
         }
-        else
+        else if (lerping)
         {
             lerpT += speed * gameTime.DeltaTime;
             Transform.Position = MathUtil.Lerp(lerpFrom, lerpTo, lerpT);

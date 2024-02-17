@@ -43,7 +43,7 @@ public class TileManager : Component
                 foreach (char tile in row)
                 {
                     if (tile != ' ') {
-                        tiles[lineNumber, position] = new TileNode(MathExtend.Decode(tile.ToString(), 16));
+                        tiles[lineNumber, position] = new TileNode(MathExtend.Decode(tile.ToString(), 36));
                     }
                     Console.Write(tile);
                     position++;
@@ -119,7 +119,7 @@ public class TileManager : Component
                         }
                         if (tiles[i, j].Type == TileType.WALL)
                         {
-                            newTile.Transform.Position.Z = 100f;
+                            newTile.Transform.Position.Z = 20f;
 
                         }
                     }

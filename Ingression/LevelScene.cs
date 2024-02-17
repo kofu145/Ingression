@@ -22,12 +22,19 @@ public class LevelScene : GameState
         tilerEntity.Tag = "TileManager";
         player = new Entity();
         
+        Entity talk = new Entity();
+        var initDialogueStr = $@"Content/Dialogue/{levelName}.txt";
+        Console.WriteLine(initDialogueStr);
+
+        if (Path.Exists(initDialogueStr))
+            talk.AddComponent(new ConversationManager(initDialogueStr));
+        
+        AddEntity(talk);
+        
         AddEntity(tilerEntity);
         
         base.Initialize();
 
-        
-        
         tilerEntity.AddComponent(new TileManager());
         var tileManager = tilerEntity.GetComponent<TileManager>();
         tileManager.ConstructFromFile($@"./Content/Levels/{levelName}.txt");
@@ -59,6 +66,18 @@ public class LevelScene : GameState
         bgEntity.Transform.Position =
             new Vector3(GameStateManager.Window.Width / 2, GameStateManager.Window.Height / 2, 0);
         bgEntity.Transform.Scale = new Vector2(5, 5);
+
+
+        if (Path.Exists(initDialogueStr))
+        {
+            talk.GetComponent<ConversationManager>().StartDialogue();
+            player.GetComponent<Player>().Waiting = true;
+            talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
+            {
+                player.GetComponent<Player>().Waiting = false;
+            };
+        }
+
         
         AddEntity(player);
         AddEntity(bgEntity);

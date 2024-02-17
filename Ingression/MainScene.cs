@@ -18,7 +18,7 @@ public class MainScene : GameState
         player = new Entity();
         
         Entity talk = new Entity();
-        talk.AddComponent(new ConversationManager("Content/Dialogue/diagtest.txt", "bob"));
+        talk.AddComponent(new ConversationManager("Content/Dialogue/diagtest.txt"));
         AddEntity(talk);
 
         

@@ -28,7 +28,9 @@ public enum TileType{
     BLUE_BUTTON_DOWN = 19,
     BLUE_BUTTON_UP = 20,
     BLUE_LEVER_RIGHT = 21,
-    BLUE_LEVER_LEFT = 22
+    BLUE_LEVER_LEFT = 22,
+    CRATEHOLE = 23,
+    CRATEHOLE_FILLED = 24
     
 }
 

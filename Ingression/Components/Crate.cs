@@ -17,6 +17,7 @@ public class Crate : Component
     private TileNode? finishLerp;
     private TileNode? lerpToFinishLerp;
     private Direction finishLerpDir;
+    private bool cratefall;
 
     public Crate() {
         lerpFrom = new Vector3();
@@ -25,6 +26,7 @@ public class Crate : Component
         currentTile = null;
         speed = 7f;
         finishLerpDir = Direction.NONE;
+        cratefall = false;
     }
 
     private void PlaySmokeAnim()
@@ -92,7 +94,13 @@ public class Crate : Component
                                 doorDir = door.OtherDoor?.Tile.West;
                                 break;
                         }
-                        if (door.OtherDoor != null && doorDir != null && doorDir.Type == TileType.FLOOR)
+
+                        TileType[] movables = new[]
+                        {
+                            TileType.FLOOR, TileType.CRATEHOLE, TileType.SWITCH_DOOR_OPEN, TileType.B_SWITCHDOOR_OPEN, TileType.BUTTON_DOWN,
+                            TileType.ONEWAY_EAST, TileType.ONEWAY_WEST, TileType.ONEWAY_NORTH, TileType.ONEWAY_SOUTH
+                        };
+                        if (door.OtherDoor != null && doorDir != null && (movables.Contains(doorDir.Type)))
                         {
                             node.Occupant.GetComponent<Animation>().Play();
                             door.OtherDoor.ParentEntity.GetComponent<Animation>().Play();
@@ -160,6 +168,10 @@ public class Crate : Component
             case TileType.B_SWITCHDOOR_OPEN:
                 if(node.Occupant == null) 
                     LerpSetTileNode(node);
+                break;
+            case TileType.CRATEHOLE:
+                cratefall = true;
+                LerpSetTileNode(node);
                 break;
         }
         
@@ -255,6 +267,11 @@ public class Crate : Component
                     var tmp = finishLerpDir;
                     finishLerpDir = Direction.NONE;
                     CheckMove(tmp);
+                }
+                else if (cratefall)
+                {
+                    currentTile.ChangeType(TileType.CRATEHOLE_FILLED);
+                    ParentScene.DestroyEntity(ParentEntity);
                 }
             }
         }

@@ -15,7 +15,7 @@ public class ConversationManager : Component
     private bool conversing;
     private Dialogue textGenerator;
     private Entity boxEntity;
-    private DialogueManager dialogueManager;
+    public DialogueManager dialogueManager;
     private string[] options;
     private List<string> mainFile;
     public bool talkedFlag;
@@ -24,13 +24,12 @@ public class ConversationManager : Component
     private Entity player;
     private string name;
 
-    public ConversationManager(string conversationPath, string name)
+    public ConversationManager(string conversationPath)
     {
         convName = conversationPath.Split(".")[0];
         conversing = false;
         talkedFlag = false;
         useFinish = false;
-        options = new string[2];
         mainFile = new List<string>();
         timer = 0;
         this.name = name;
@@ -53,25 +52,14 @@ public class ConversationManager : Component
     private void InvokeText(string name)
     {
         mainFile.Clear();
-        for (int i = 0; i < options.Length; i++)
-        {
-            options[i] = "none";
-        }
         
         var readFile = File.ReadAllLines(name);
         for (int i=0; i<readFile.Length; i++)
         {
-            if (readFile[i].StartsWith("option:"))
-            {
-                options[i] = readFile[i].Split(":")[1];
-            }
-            else
-            {
-                mainFile.Add(readFile[i]);
-            }
+            mainFile.Add(readFile[i]);
         }
         
-        textGenerator = new Dialogue(mainFile.ToArray(), this.name);
+        textGenerator = new Dialogue(mainFile.ToArray());
         boxEntity = textGenerator.Instantiate();
         dialogueManager = boxEntity.GetComponent<DialogueManager>();
         ParentScene.AddEntity(boxEntity);
