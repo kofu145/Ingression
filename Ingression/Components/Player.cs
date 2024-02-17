@@ -17,6 +17,8 @@ public enum Direction
 
 public class Player : Component
 {
+    public bool Waiting;
+    
     private const int PlayerSize = 4;
     private const int DoorSize = 4;
     
@@ -43,6 +45,7 @@ public class Player : Component
         placingDoor = false;
         lerpT = 0;
         lerping = false;
+        Waiting = false;
         currentTile = null;
         finishLerp = null;
         lerpToFinishLerp = null;
@@ -244,7 +247,7 @@ public class Player : Component
                 crateTile = node.West;
                 break;
         } 
-        crate.CheckMove(crateTile);
+        crate.CheckMove(direction);
         sound.Play("cratemove");
     }
 
@@ -402,7 +405,7 @@ public class Player : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        if (!lerping)
+        if (!lerping && !Waiting)
         {
             // Movement
             if (InputManager.GetKeyDown(inputs[0]))

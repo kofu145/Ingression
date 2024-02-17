@@ -40,9 +40,9 @@ public class Dialogue : Prefab
         var rect = dialogueEntity.GetComponent<RenderRect>();
         var textComponent = dialogueEntity.GetComponent<TextComponent>();
         
-        rect.FillColor = Color.FromArgb(89, 82, 70);
-        rect.BorderThickness = 10;
-        rect.OutlineColor = Color.FromArgb(25, 31, 34);
+        rect.FillColor = Color.FromArgb(75, 128, 202);
+        rect.BorderThickness = 4;
+        rect.OutlineColor = Color.FromArgb(33, 33, 35);
         dialogueEntity.Transform.Position =
             new Vector3(
                 (float)GameStateManager.Window.settings.Width / 2 - rect.Size.X / 2,

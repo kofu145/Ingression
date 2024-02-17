@@ -32,7 +32,8 @@ public class LevelScene : GameState
         var tileManager = tilerEntity.GetComponent<TileManager>();
         tileManager.ConstructFromFile($@"./Content/Levels/{levelName}.txt");
 
-        player.AddComponent(new Player(10f, levelName));
+        player.Tag = "player";
+        player.AddComponent(new Player(8f, levelName));
         player.AddComponent(new Sprite("./Content/bob.png"));
         player.AddComponent(new Animation());
         player.AddComponent(new Sound());

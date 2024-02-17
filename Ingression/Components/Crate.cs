@@ -16,13 +16,15 @@ public class Crate : Component
     private float speed;
     private TileNode? finishLerp;
     private TileNode? lerpToFinishLerp;
+    private Direction finishLerpDir;
 
     public Crate() {
         lerpFrom = new Vector3();
         lerpTo = new Vector3();
         lerping = false;
         currentTile = null;
-        speed = 4f;
+        speed = 7f;
+        finishLerpDir = Direction.NONE;
     }
 
     private void PlaySmokeAnim()
@@ -41,7 +43,23 @@ public class Crate : Component
     }
 
     // checkMove
-    public void CheckMove(TileNode? node) {
+    public void CheckMove(Direction direction) {
+        TileNode? node = null;
+        switch (direction)
+        {
+            case Direction.NORTH:
+                node = currentTile.North;
+                break;
+            case Direction.EAST:
+                node = currentTile.East;
+                break;
+            case Direction.SOUTH:
+                node = currentTile.South;
+                break;
+            case Direction.WEST:
+                node = currentTile.West;
+                break;
+        }
         if (node == null)
         {
             return;
@@ -53,6 +71,23 @@ public class Crate : Component
             case TileType.FLOOR:
                 if(node.Occupant == null) 
                     LerpSetTileNode(node);
+                else
+                {
+                    if (node.Occupant.HasComponent<Door>())
+                    {
+                        var door = node.Occupant?.GetComponent<Door>();
+                        if (door.OtherDoor != null)
+                        {
+                            node.Occupant.GetComponent<Animation>().Play();
+                            door.OtherDoor.ParentEntity.GetComponent<Animation>().Play();
+                            LerpSetTileNode(node);
+                            finishLerp = door.OtherDoor?.Tile;
+                            finishLerpDir = direction;
+                            ParentScene.FindWithTag("player").GetComponent<Sound>().Play("doorenter");
+                        }
+                    }
+                }
+
                 break;
             case TileType.WALL:
                 break;
@@ -60,19 +95,19 @@ public class Crate : Component
                 break;
             case TileType.ONEWAY_NORTH:
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.North;
+                finishLerpDir = Direction.NORTH;
                 break;
             case TileType.ONEWAY_SOUTH:
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.South;
+                finishLerpDir = Direction.SOUTH;
                 break;
             case TileType.ONEWAY_WEST:
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.West;
+                finishLerpDir = Direction.WEST;
                 break;
             case TileType.ONEWAY_EAST:
                 LerpSetTileNode(node);
-                lerpToFinishLerp = node.East;
+                finishLerpDir = Direction.EAST;
                 break;
             case TileType.BUTTON_UP:
                 if(node.Occupant == null) 
@@ -159,6 +194,13 @@ public class Crate : Component
                 {
                     LerpSetTileNode(lerpToFinishLerp);
                     lerpToFinishLerp = null;
+                }
+                
+                else if (finishLerpDir != Direction.NONE)
+                {
+                    var tmp = finishLerpDir;
+                    finishLerpDir = Direction.NONE;
+                    CheckMove(tmp);
                 }
             }
         }
