@@ -97,8 +97,8 @@ public class Crate : Component
 
                         TileType[] movables = new[]
                         {
-                            TileType.FLOOR, TileType.CRATEHOLE, TileType.SWITCH_DOOR_OPEN, TileType.B_SWITCHDOOR_OPEN, TileType.BUTTON_DOWN,
-                            TileType.ONEWAY_EAST, TileType.ONEWAY_WEST, TileType.ONEWAY_NORTH, TileType.ONEWAY_SOUTH
+                            TileType.FLOOR, TileType.CRATEHOLE, TileType.SWITCH_DOOR_OPEN, TileType.B_SWITCHDOOR_OPEN, TileType.BUTTON_UP,
+                            TileType.BLUE_BUTTON_UP, TileType.ONEWAY_EAST, TileType.ONEWAY_WEST, TileType.ONEWAY_NORTH, TileType.ONEWAY_SOUTH
                         };
                         if (door.OtherDoor != null && doorDir != null && (movables.Contains(doorDir.Type)))
                         {
