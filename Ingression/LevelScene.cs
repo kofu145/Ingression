@@ -12,12 +12,15 @@ public class LevelScene : GameState
     private Entity tilerEntity;
     private Entity player;
     private string levelName;
-    public LevelScene(string levelName){
+    private bool doDialogue;
+    public LevelScene(string levelName, bool doDialogue){
         this.levelName = levelName;
+        this.doDialogue = doDialogue;
     }
 
     public override void Initialize()
     {
+        GameStateManager.SetSceneTransition(SceneTransition.FadeIn);
         tilerEntity = new Entity();
         tilerEntity.Tag = "TileManager";
         player = new Entity();
@@ -26,7 +29,7 @@ public class LevelScene : GameState
         var initDialogueStr = $@"Content/Dialogue/{levelName}.txt";
         Console.WriteLine(initDialogueStr);
 
-        if (Path.Exists(initDialogueStr))
+        if (Path.Exists(initDialogueStr) && doDialogue)
             talk.AddComponent(new ConversationManager(initDialogueStr));
         
         AddEntity(talk);
@@ -68,7 +71,7 @@ public class LevelScene : GameState
         bgEntity.Transform.Scale = new Vector2(5, 5);
 
 
-        if (Path.Exists(initDialogueStr))
+        if (Path.Exists(initDialogueStr) && doDialogue)
         {
             talk.GetComponent<ConversationManager>().StartDialogue();
             player.GetComponent<Player>().Waiting = true;

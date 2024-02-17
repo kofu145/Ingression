@@ -204,7 +204,7 @@ public class Player : Component
                     LerpSetTileNode(node);
                 break;
             case TileType.REGULAR_DOOR:
-                GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString()));
+                GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString(), true));
                 break;
             case TileType.LEVER_LEFT:
                 //PlaySmokeAnim();
@@ -544,7 +544,7 @@ public class Player : Component
             else if (InputManager.GetKeyDown(inputs[6])) 
             {
                 sound.Play("reset");
-                GameStateManager.SwapScreen(new LevelScene(levelName));
+                GameStateManager.SwapScreen(new LevelScene(levelName, false));
             }
         }
         else if (lerping)
