@@ -286,7 +286,10 @@ public class Player : Component
                 break;
             case TileType.CRATEHOLE_FILLED:
                 PlaySmokeAnim();
-                LerpSetTileNode(node);
+                if (node.Occupant != null && node.Occupant.HasComponent<Crate>())    
+                    CrateMove(direction, node);
+                else
+                    LerpSetTileNode(node);
                 break;
             case TileType.SIDEWALK: 
                 PlaySmokeAnim();
