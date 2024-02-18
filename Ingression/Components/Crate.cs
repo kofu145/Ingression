@@ -173,6 +173,9 @@ public class Crate : Component
                 cratefall = true;
                 LerpSetTileNode(node);
                 break;
+            case TileType.CRATEHOLE_FILLED:
+                LerpSetTileNode(node);
+                break;
         }
         
         if (lerping && prevNode.Type == TileType.BUTTON_DOWN)
