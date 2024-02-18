@@ -271,6 +271,7 @@ public class Crate : Component
                 else if (cratefall)
                 {
                     currentTile.ChangeType(TileType.CRATEHOLE_FILLED);
+                    currentTile.Occupant = null;
                     ParentScene.DestroyEntity(ParentEntity);
                 }
             }
