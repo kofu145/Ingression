@@ -1,5 +1,5 @@
 Door: Knock, knock!
-Teenager: Hey Bob! You probably don’t know me, but I’m Sally’s granddaughter, Angela.
+Angela: Hey Bob! You probably don’t know me, but I’m Sally’s granddaughter, Angela.
 Past Bob: Oh hi Angela, is your grandmother doing well?
 Angela: Yes, she’s doing well! Thank you for fixing her house up for cheap! We haven’t been able to pay for it to get it fixed earlier since we’ve been struggling to pay for her chemo.
 Past Bob: Chemo? Your grandmother has cancer?
@@ -15,7 +15,7 @@ Past Bob: No, I insist!
 Past Bob: What matters is that your grandmother gets to live in a house where she feels comfortable, and doesn’t have to worry about the cost of fixing things in her house.
 Past Bob: I haven’t been feeling the greatest recently, but seeing people happy from what I do brightens up my whole day.
 Angela: Thank you so much!
-Angela: This is probably the best thing to happen to us since my grandma got diagnosed with cancer!
+Angela: It's been so long since I've heard such nice things!
 Angela: We’ll pay you back someday, I promise!
 Past Bob: No need to, I insist!
 Angela: I’ll make sure to tell my family about this, thank you so so much! :)

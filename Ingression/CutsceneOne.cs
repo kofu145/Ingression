@@ -10,6 +10,7 @@ public class CutsceneOne : GameState
 {
     public override void Initialize()
     {
+        Program.GlobalMusic.Play("construction");
         Entity talk = new Entity();
         talk.AddComponent(new ConversationManager("Content/Dialogue/Scene1.txt"));
         AddEntity(talk);
@@ -18,6 +19,7 @@ public class CutsceneOne : GameState
         talk.GetComponent<ConversationManager>().StartDialogue();
         talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
         {
+            Program.GlobalMusic.Stop();
             GameStateManager.SetSceneTransition(SceneTransition.FadeIn);
             GameStateManager.AddScreen(new LevelScene("3", true));
         };        

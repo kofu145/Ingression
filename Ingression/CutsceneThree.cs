@@ -11,6 +11,8 @@ public class CutsceneThree : GameState
     private Entity bob;
     public override void Initialize()
     {
+        Program.GlobalMusic.Play("construction");
+
         bob = new Entity();
         
         Entity talk = new Entity();
@@ -21,6 +23,7 @@ public class CutsceneThree : GameState
         talk.GetComponent<ConversationManager>().StartDialogue();
         talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
         {
+            Program.GlobalMusic.Stop();
             GameStateManager.SetSceneTransition(SceneTransition.FadeIn);
             GameStateManager.SwapScreen(new LevelScene("7", true));
         };

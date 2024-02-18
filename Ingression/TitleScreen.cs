@@ -31,7 +31,7 @@ public class TitleScreen : GameState
         background.Transform.Scale = new Vector2(5f, 5f);
         
         var button = new Entity();
-        button.AddComponent(new Button(300, 100));
+        button.AddComponent(new Button(600, 100));
         button.AddComponent(new TextComponent("START", "SourceFiles/square.ttf", 80));
         button.AddComponent(new RenderRect(new Vector2(600, 100)));
         var rect = button.GetComponent<RenderRect>();

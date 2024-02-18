@@ -209,6 +209,10 @@ public class Player : Component
                 levelName = (Int32.Parse(levelName)+1).ToString();
                 switch (levelName)
                 {
+                    case "1":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new LevelScene(levelName, true));
+                        break;
                     case "3":
                         Program.GlobalMusic.Stop();
                         GameStateManager.AddScreen(new CutsceneOne());

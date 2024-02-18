@@ -23,6 +23,7 @@ public class IntroScene : GameState
         tilerEntity = new Entity();
         tilerEntity.Tag = "TileManager";
         player = new Entity();
+        Program.GlobalMusic.Play("nature");
         
         Entity talk = new Entity();
         var initDialogueStr = $@"Content/Dialogue/0.txt";

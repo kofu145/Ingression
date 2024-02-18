@@ -11,6 +11,7 @@ public class CutsceneFive : GameState
     private Entity bob;
     public override void Initialize()
     {
+        Program.GlobalMusic.Play("final");
         bob = new Entity();
         
         Entity talk = new Entity();
@@ -21,6 +22,7 @@ public class CutsceneFive : GameState
         talk.GetComponent<ConversationManager>().StartDialogue();
         talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
         {
+            Program.GlobalMusic.Stop();
             GameStateManager.SetSceneTransition(SceneTransition.FadeIn);
             GameStateManager.SwapScreen(new Credits());
         };                
