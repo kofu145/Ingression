@@ -63,6 +63,11 @@ public class TileManager : Component
                             Head = tiles[i, j];
                             tiles[i, j].ChangeValueType(TileType.FLOOR);
                         }
+                        else if (Head == null && tiles[i, j].Type == TileType.SIDEWALK)
+                        {
+                            Head = tiles[i, j];
+                            tiles[i, j].ChangeValueType(TileType.SIDEWALK);
+                        }
                         if (tiles[i, j].Type == TileType.CRATE)
                         {
                             tiles[i, j].ChangeValueType(TileType.FLOOR);

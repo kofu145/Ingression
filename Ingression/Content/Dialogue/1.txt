@@ -1,3 +1,4 @@
-﻿Bob:What the- what's all this stuff doing in my house!?
-Bob:I'm not sure what's going on, but I think I should try going deeper in...
-Bob:I feel... strange... maybe I could put some of my construction expertise to use? Let's try making a door.
+﻿Bob: What the- this isn't my living room, where am I!?
+Bob: I'm not sure what's going on, but I think I should try going deeper in...
+Bob: I feel... strange... maybe I could put some of my construction expertise to use? Let's try making a door.
+System: Press K or L to create a door - make both and try seeing what happens!

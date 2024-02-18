@@ -48,7 +48,7 @@ public class Dialogue : Prefab
         
         textComponent.TextOffset = new Vector2(rect.Size.X*.03f, rect.Size.Y*.08f);
         dialogueEntity.AddComponent(new DialogueManager(dialogue, .02, 
-            60));
+            55));
 
         return dialogueEntity;
     }

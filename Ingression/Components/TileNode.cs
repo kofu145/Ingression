@@ -30,7 +30,8 @@ public enum TileType{
     BLUE_LEVER_RIGHT = 21,
     BLUE_LEVER_LEFT = 22,
     CRATEHOLE = 23,
-    CRATEHOLE_FILLED = 24
+    CRATEHOLE_FILLED = 24,
+    SIDEWALK = 25, // for intro scene
     
 }
 

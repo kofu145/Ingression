@@ -51,8 +51,8 @@ public class DialogueManager : Component
         base.Initialize();
         textComponent = ParentEntity.GetComponent<TextComponent>();
         sound = ParentEntity.GetComponent<Sound>();
-        name = dialogue[currText].Split(":")[0];
-        toRender = TextWrap(dialogue[currText].Split(":")[1], cutoff);
+        name = dialogue[currText].Split(": ")[0];
+        toRender = TextWrap(dialogue[currText].Split(": ")[1], cutoff);
         advanceTime = 0;
         
         nameBox = new Entity();
@@ -81,7 +81,8 @@ public class DialogueManager : Component
         nameText.TextOffset = new Vector2(rect.Size.X*.05f, rect.Size.Y*.1f);
 
         popupSprite = new Entity();
-        popupSprite.AddComponent(new Sprite($@"./Content/Sprites/{name.ToLower()}.png"));
+        if (Path.Exists($@"./Content/Sprites/Characters/{name.ToLower()}.png"))
+            popupSprite.AddComponent(new Sprite($@"./Content/Sprites/Characters/{name.ToLower()}.png"));
         popupSprite.Transform.Position =
             new Vector3(rect.Size.X, (float)GameStateManager.Window.settings.Height / 2, 99f);
         popupSprite.Transform.Scale = new Vector2(20f, 20f);
@@ -101,8 +102,12 @@ public class DialogueManager : Component
                 Rendering = false;
             if (currChar % 3 == 0)
                 sound.Play("scroll");
-            popupSprite.RemoveComponent<Sprite>();
-            popupSprite.AddComponent(new Sprite($@"./Content/Sprites/{name.ToLower()}.png"));
+            
+            if (popupSprite.HasComponent<Sprite>())
+                popupSprite.RemoveComponent<Sprite>();
+            if (Path.Exists($@"./Content/Sprites/Characters/{name.ToLower()}.png"))
+                popupSprite.AddComponent(new Sprite($@"./Content/Sprites/Characters/{name.ToLower()}.png"));
+            
             nameText.Text = name;
             textComponent.Text = Environment.NewLine + toRender.Substring(0, currChar);
         }
@@ -122,8 +127,8 @@ public class DialogueManager : Component
                 else
                 {
                     currText++;
-                    name = dialogue[currText].Split(":")[0];
-                    toRender = TextWrap(dialogue[currText].Split(":")[1], cutoff);
+                    name = dialogue[currText].Split(": ")[0];
+                    toRender = TextWrap(dialogue[currText].Split(": ")[1], cutoff);
                     currChar = 0;
                     sound.Play("advance");
                 }

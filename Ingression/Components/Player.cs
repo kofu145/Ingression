@@ -204,7 +204,35 @@ public class Player : Component
                     LerpSetTileNode(node);
                 break;
             case TileType.REGULAR_DOOR:
-                GameStateManager.AddScreen(new LevelScene((Int32.Parse(levelName)+1).ToString(), true));
+                LerpSetTileNode(node);
+                sound.Play("leveldoor");
+                levelName = (Int32.Parse(levelName)+1).ToString();
+                switch (levelName)
+                {
+                    case "3":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new CutsceneOne());
+                        break;
+                    case "5":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new CutsceneTwo());
+                        break;
+                    case "7":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new CutsceneThree());
+                        break;
+                    case "9":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new CutsceneFour());
+                        break;
+                    case "11":
+                        Program.GlobalMusic.Stop();
+                        GameStateManager.AddScreen(new CutsceneFive());
+                        break;
+                    default:
+                        GameStateManager.AddScreen(new LevelScene(levelName, true));
+                        break;
+                }
                 break;
             case TileType.LEVER_LEFT:
                 //PlaySmokeAnim();
@@ -257,6 +285,10 @@ public class Player : Component
                 sound.Play("switch");
                 break;
             case TileType.CRATEHOLE_FILLED:
+                PlaySmokeAnim();
+                LerpSetTileNode(node);
+                break;
+            case TileType.SIDEWALK: 
                 PlaySmokeAnim();
                 LerpSetTileNode(node);
                 break;

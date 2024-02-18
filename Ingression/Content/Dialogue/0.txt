@@ -1,0 +1,3 @@
+Bob: Ugh, I'm so tired... I wish I didn't have to work all the time.
+Bob: Can't wait to get home!
+System: Use WASD to move, press R to reset level

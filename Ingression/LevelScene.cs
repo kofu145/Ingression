@@ -16,6 +16,10 @@ public class LevelScene : GameState
     public LevelScene(string levelName, bool doDialogue){
         this.levelName = levelName;
         this.doDialogue = doDialogue;
+        if (!Program.GlobalMusic.isPlaying)
+        {
+            Program.GlobalMusic.Play("music");
+        }
     }
 
     public override void Initialize()
@@ -44,7 +48,7 @@ public class LevelScene : GameState
 
         player.Tag = "player";
         player.AddComponent(new Player(8f, levelName));
-        player.AddComponent(new Sprite("./Content/Sprites/bob.png"));
+        player.AddComponent(new Sprite("./Content/Sprites/Characters/bob.png"));
         player.AddComponent(new Animation());
         player.AddComponent(new Sound());
         var sound = player.GetComponent<Sound>();
@@ -56,8 +60,9 @@ public class LevelScene : GameState
         sound.AddSound("./Content/Sound/doorenter.wav", "doorenter");
         sound.AddSound("./Content/Sound/reset.wav", "reset");
         sound.AddSound("./Content/Sound/oneway.wav", "oneway");
-        
-        player.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/bobidle-Sheet.png", "idle", .2f, (16, 16));
+        sound.AddSound("./Content/Sound/leveldoor.wav", "leveldoor");
+
+        player.GetComponent<Animation>().LoadTextureAtlas("./Content/Sprites/Characters/bobidle-Sheet.png", "idle", .2f, (16, 16));
         player.GetComponent<Animation>().SetState("idle");
         
         player.GetComponent<Player>().SetTileNode(tileManager.Head);
@@ -80,8 +85,9 @@ public class LevelScene : GameState
                 player.GetComponent<Player>().Waiting = false;
             };
         }
-
         
+        
+
         AddEntity(player);
         AddEntity(bgEntity);
 
