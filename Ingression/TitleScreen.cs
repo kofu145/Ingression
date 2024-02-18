@@ -44,7 +44,7 @@ public class TitleScreen : GameState
         button.GetComponent<Button>().OnButtonDown += () =>
         {
             //title.GetComponent<Sound>().Dispose();
-            GameStateManager.AddScreen(new IntroScene());
+            GameStateManager.AddScreen(new IntroScene(true));
         };
 
         AddEntity(button);

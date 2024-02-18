@@ -21,7 +21,7 @@ internal class Program
             Width = 1280,
             Height = 720
         };
-        Window window = new Window(new TitleScreen(), windowSettings);
+        Window window = new Window(new IntroScene(true), windowSettings);
         window.Run();
 
     }

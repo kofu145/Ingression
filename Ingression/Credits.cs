@@ -12,12 +12,13 @@ public class Credits : GameState
     public override void Initialize()
     {
         base.Initialize();
+        Program.GlobalMusic.Play();
         mainText = new Entity();
         string text = "CREDITS:" + Environment.NewLine
             + "PROGRAMMING" + Environment.NewLine
             + "Kofu, Xyammerz" + Environment.NewLine
             + "LEVEL DESIGN" + Environment.NewLine
-            + "Kofu, Xyammerz, Slime" + Environment.NewLine
+            + "Kofu, Xyammerz, Slime, @NTRSOUND" + Environment.NewLine
             + "DIALOGUE" + Environment.NewLine
             + "Xyammerz" + Environment.NewLine
             + "THANK YOU SO MUCH FOR PLAYING!" + Environment.NewLine;

@@ -576,7 +576,10 @@ public class Player : Component
             else if (InputManager.GetKeyDown(inputs[6])) 
             {
                 sound.Play("reset");
-                GameStateManager.SwapScreen(new LevelScene(levelName, false));
+                if (levelName != "0")
+                    GameStateManager.SwapScreen(new LevelScene(levelName, false));
+                else
+                    GameStateManager.SwapScreen(new IntroScene(false));
             }
         }
         else if (lerping)

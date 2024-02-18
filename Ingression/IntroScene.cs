@@ -11,7 +11,10 @@ public class IntroScene : GameState
 {
     private Entity tilerEntity;
     private Entity player;
-    public IntroScene(){
+    private bool doDialogue;
+    public IntroScene(bool doDialogue)
+    {
+        this.doDialogue = doDialogue;
     }
 
     public override void Initialize()
@@ -66,12 +69,16 @@ public class IntroScene : GameState
             new Vector3(GameStateManager.Window.Width / 2, GameStateManager.Window.Height / 2, 0);
         bgEntity.Transform.Scale = new Vector2(5, 5);
 
-        talk.GetComponent<ConversationManager>().StartDialogue();
-        player.GetComponent<Player>().Waiting = true;
-        talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
-        { 
-            player.GetComponent<Player>().Waiting = false;
-        };
+        if (doDialogue)
+        {
+            talk.GetComponent<ConversationManager>().StartDialogue();
+            player.GetComponent<Player>().Waiting = true;
+            talk.GetComponent<ConversationManager>().dialogueManager.Finished += () =>
+            { 
+                player.GetComponent<Player>().Waiting = false;
+            };
+        }
+        
         
 
         
